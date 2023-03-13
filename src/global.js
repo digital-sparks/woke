@@ -7,21 +7,18 @@ Webflow.push(function () {
 /* SPLIT TEXT CODE                                       */
 /*-------------------------------------------------------*/
 
+let typeSplit = [];
 let splitTypeReady = setInterval(function () {
 
   if (window.SplitType && window.gsap && window.ScrollTrigger) {
 
-  // if (typeof SplitType != 'undefined' && typeof gsap != 'undefined' && typeof ScrollTrigger == 'function') {
-
     clearInterval(splitTypeReady);
-    gsap.registerPlugin(ScrollTrigger);
-
-    typeSplit = [];
+    gsap.registerPlugin(ScrollTrigger); // register scrollPlugin
 
     // Split the text up
     function runSplit() {
-      typeSplit[0] = new SplitType('#split-text', {
-        types: "lines, words"
+      typeSplit[0] = new SplitType('#split-text div', {
+        types: "lines"
       });
       createAnimation();
     }
@@ -39,15 +36,13 @@ let splitTypeReady = setInterval(function () {
       }
     });
 
-
-
     function createAnimation() {
       $(".line").each(function (index) {
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: $(this), // trigger element - viewport
-            start: "top 65%",
-            end: "bottom 65%",
+            start: "top 85%",
+            end: "bottom 85%",
             scrub: 1
           }
         });
@@ -70,9 +65,6 @@ let splitTypeReady = setInterval(function () {
 
 
 
-
-
-
 /*-------------------------------------------------------*/
 /* GLOBAL VARIABLES                                      */
 /*-------------------------------------------------------*/
@@ -80,17 +72,26 @@ let splitTypeReady = setInterval(function () {
   let answers = []; // array storing user's answers
   const slides = document.querySelectorAll('.quiz-slide'); // all slides
 
-  slides.forEach((slide, i) => {
+  slides.forEach((slide, i) => { // prepare all slides and make first one visible
     slide.classList.remove('is-active');
     if (i != 0) slide.style.display = 'none';
   });
+  slides[0].style.display = 'block';
 
 /*-------------------------------------------------------*/
 /* GLOBAL VARIABLES                                      */
 /*-------------------------------------------------------*/
 
 
-function stackedCards(objId, isInitialRound) {
+
+
+
+/*-------------------------------------------------------*/
+/* STACKED CARDS FUNCTION                                */
+/*-------------------------------------------------------*/
+
+
+function stackedCards(objId, roundCount) {
 
 		const stackedOptions = 'Bottom'; //Change stacked cards view from 'Bottom', 'Top' or 'None'.
 		const rotate = false; //Activate the elements' rotation for each move on stacked cards.
@@ -106,7 +107,7 @@ function stackedCards(objId, isInitialRound) {
 		let listElNodesObj; //Keep the list of nodes from stacked cards.
 		let listElNodesWidth; //Keep the stacked cards width.
 		let currentElementObj; //Keep the stacked card element to swipe.
-    let progressElement;
+    // let progressElement;
 		let stackedCardsObj;
 		let isFirstTime = true;
 		let elementHeight;
@@ -114,15 +115,14 @@ function stackedCards(objId, isInitialRound) {
 		let elTrans;
 
 
-		obj = objId; // document.getElementById('stacked-cards-block');
+		obj = objId;
 		stackedCardsObj = obj.querySelector('.stacked-cards-container');
-		listElNodesObj = stackedCardsObj.children;
-    progressElement = obj.parentNode.querySelector('.progresbar_active');
-    progressElement.style.width = '0px';
+		listElNodesObj = stackedCardsObj.children; // holds all of the question cards
+    // progressElement = obj.parentNode.querySelector('.progresbar_active');
+    // progressElement.style.width = '0px';
 
     const questions = listElNodesObj;
     const questionsLenght = questions.length;
-
 
 		topObj = obj.querySelector('.stackedcards-overlay.top');
 		rightObj = obj.querySelector('.stackedcards-overlay.right');
@@ -178,52 +178,52 @@ function stackedCards(objId, isInitialRound) {
 			listElNodesObj[currentPosition].classList.add('stackedcards-active');
 		}
 
-		if(useOverlays){
-			leftObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-			leftObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-
-			rightObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-			rightObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-
-			topObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-			topObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
-
-		} else {
-			// leftObj.className = '';
-			// rightObj.className = '';
-			// topObj.className = '';
-      //
-			// leftObj.classList.add('stackedcards-overlay-hidden');
-			// rightObj.classList.add('stackedcards-overlay-hidden');
-			// topObj.classList.add('stackedcards-overlay-hidden');
-		}
+		// if(useOverlays){
+		// 	leftObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+		// 	leftObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+    //
+		// 	rightObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+		// 	rightObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+    //
+		// 	topObj.style.transform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+		// 	topObj.style.webkitTransform = 'translateX(0px) translateY(' + elTrans + 'px) translateZ(0px) rotate(0deg)';
+    //
+		// } else {
+		// 	// leftObj.className = '';
+		// 	// rightObj.className = '';
+		// 	// topObj.className = '';
+    //   //
+		// 	// leftObj.classList.add('stackedcards-overlay-hidden');
+		// 	// rightObj.classList.add('stackedcards-overlay-hidden');
+		// 	// topObj.classList.add('stackedcards-overlay-hidden');
+		// }
 
 		//Remove class init
 		setTimeout(function() {
 			obj.classList.remove('init');
-		},150);
+		}, 150);
 
 
-		function backToMiddle() {
-
-			removeNoTransition();
-			transformUi(0, 0, 1, currentElementObj);
-
-			if(useOverlays){
-				transformUi(0, 0, 0, leftObj);
-				transformUi(0, 0, 0, rightObj);
-				transformUi(0, 0, 0, topObj);
-			}
-
-			setZindex(5);
-
-			if(!(currentPosition >= maxElements)){
-				//roll back the opacity of second element
-				if((currentPosition + 1) < maxElements){
-					listElNodesObj[currentPosition + 1].style.opacity = '.8';
-				}
-			}
-		};
+		// function backToMiddle() {
+    //
+		// 	removeNoTransition();
+		// 	transformUi(0, 0, 1, currentElementObj);
+    //
+		// 	// if(useOverlays){
+		// 	// 	transformUi(0, 0, 0, leftObj);
+		// 	// 	transformUi(0, 0, 0, rightObj);
+		// 	// 	transformUi(0, 0, 0, topObj);
+		// 	// }
+    //
+		// 	setZindex(5);
+    //
+		// 	if(!(currentPosition >= maxElements)){
+		// 		//roll back the opacity of second element
+		// 		if((currentPosition + 1) < maxElements){
+		// 			listElNodesObj[currentPosition + 1].style.opacity = '.8';
+		// 		}
+		// 	}
+		// };
 
 		// Usable functions
 		function countElements() {
@@ -237,106 +237,105 @@ function stackedCards(objId, isInitialRound) {
 		function currentElement() {
 		  currentElementObj = listElNodesObj[currentPosition];
 		};
-
-		//Functions to swipe left elements on logic external action.
-		function onActionLeft() {
-			if(!(currentPosition >= maxElements)){
-				if(useOverlays) {
-					leftObj.classList.remove('no-transition');
-					topObj.classList.remove('no-transition');
-					leftObj.style.zIndex = '8';
-					transformUi(0, 0, 1, leftObj);
-
-				}
-
-				setTimeout(function() {
-					onSwipeLeft();
-					resetOverlayLeft();
-				},300);
-			}
-		};
-
-		//Functions to swipe right elements on logic external action.
-		function onActionRight() {
-			if(!(currentPosition >= maxElements)){
-				if(useOverlays) {
-					rightObj.classList.remove('no-transition');
-					topObj.classList.remove('no-transition');
-					rightObj.style.zIndex = '8';
-					transformUi(0, 0, 1, rightObj);
-				}
-
-				setTimeout(function(){
-					onSwipeRight();
-					resetOverlayRight();
-				},300);
-			}
-		};
+    //
+		// //Functions to swipe left elements on logic external action.
+		// function onActionLeft() {
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(useOverlays) {
+		// 			leftObj.classList.remove('no-transition');
+		// 			topObj.classList.remove('no-transition');
+		// 			leftObj.style.zIndex = '8';
+		// 			transformUi(0, 0, 1, leftObj);
+    //
+		// 		}
+    //
+		// 		setTimeout(function() {
+		// 			onSwipeLeft();
+		// 			resetOverlayLeft();
+		// 		},300);
+		// 	}
+		// };
+    //
+		// //Functions to swipe right elements on logic external action.
+		// function onActionRight() {
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(useOverlays) {
+		// 			rightObj.classList.remove('no-transition');
+		// 			topObj.classList.remove('no-transition');
+		// 			rightObj.style.zIndex = '8';
+		// 			transformUi(0, 0, 1, rightObj);
+		// 		}
+    //
+		// 		setTimeout(function(){
+		// 			onSwipeRight();
+		// 			resetOverlayRight();
+		// 		},300);
+		// 	}
+		// };
 
 		//Functions to swipe top elements on logic external action.
 		function onActionTop() {
 			if(!(currentPosition >= maxElements)){
-				if(useOverlays) {
-					leftObj.classList.remove('no-transition');
-					rightObj.classList.remove('no-transition');
-					topObj.classList.remove('no-transition');
-					topObj.style.zIndex = '8';
-					transformUi(0, 0, 1, topObj);
-				}
-
-				setTimeout(function(){
-					onSwipeTop();
-					resetOverlays();
-				}, 0); //wait animations end
+				// if(useOverlays) {
+				// 	leftObj.classList.remove('no-transition');
+				// 	rightObj.classList.remove('no-transition');
+				// 	topObj.classList.remove('no-transition');
+				// 	topObj.style.zIndex = '8';
+				// 	transformUi(0, 0, 1, topObj);
+				// }
+        //
+        setTimeout(function () {
+          onSwipeTop();
+          // resetOverlays();
+        }, 0);
 			}
 		};
 
 		//Swipe active card to left.
-		function onSwipeLeft() {
-			removeNoTransition();
-			transformUi(-1000, 0, 0, currentElementObj);
-			if(useOverlays){
-				transformUi(-1000, 0, 0, leftObj); //Move leftOverlay
-				transformUi(-1000, 0, 0, topObj); //Move topOverlay
-				resetOverlayLeft();
-			}
-			currentPosition = currentPosition + 1;
-			updateUi();
-			currentElement();
-			setActiveHidden();
-		};
+		// function onSwipeLeft() {
+		// 	removeNoTransition();
+		// 	transformUi(-1000, 0, 0, currentElementObj);
+		// 	if(useOverlays){
+		// 		transformUi(-1000, 0, 0, leftObj); //Move leftOverlay
+		// 		transformUi(-1000, 0, 0, topObj); //Move topOverlay
+		// 		resetOverlayLeft();
+		// 	}
+		// 	currentPosition = currentPosition + 1;
+		// 	updateUi();
+		// 	currentElement();
+		// 	setActiveHidden();
+		// };
 
 		//Swipe active card to right.
-		function onSwipeRight() {
-			removeNoTransition();
-			transformUi(1000, 0, 0, currentElementObj);
-			if(useOverlays){
-				transformUi(1000, 0, 0, rightObj); //Move rightOverlay
-				transformUi(1000, 0, 0, topObj); //Move topOverlay
-				resetOverlayRight();
-			}
-
-			currentPosition = currentPosition + 1;
-			updateUi();
-			currentElement();
-			setActiveHidden();
-		};
+		// function onSwipeRight() {
+		// 	removeNoTransition();
+		// 	transformUi(1000, 0, 0, currentElementObj);
+		// 	if(useOverlays){
+		// 		transformUi(1000, 0, 0, rightObj); //Move rightOverlay
+		// 		transformUi(1000, 0, 0, topObj); //Move topOverlay
+		// 		resetOverlayRight();
+		// 	}
+    //
+		// 	currentPosition = currentPosition + 1;
+		// 	updateUi();
+		// 	currentElement();
+		// 	setActiveHidden();
+		// };
 
 		//Swipe active card to top.
 		function onSwipeTop() {
 			removeNoTransition();
-			transformUi(0, -1000, 0, currentElementObj);
-			if(useOverlays){
-				transformUi(0, -1000, 0, leftObj); //Move leftOverlay
-				transformUi(0, -1000, 0, rightObj); //Move rightOverlay
-				transformUi(0, -1000, 0, topObj); //Move topOverlay
-				resetOverlays();
-			}
-
-			currentPosition = currentPosition + 1;
-			updateUi();
-			currentElement();
-			setActiveHidden();
+			transformUi(0, 0, 0, currentElementObj);
+			// if(useOverlays){
+			// 	transformUi(0, -1000, 0, leftObj); //Move leftOverlay
+			// 	transformUi(0, -1000, 0, rightObj); //Move rightOverlay
+			// 	transformUi(0, -1000, 0, topObj); //Move topOverlay
+			// 	resetOverlays();
+			// }
+      currentPosition = currentPosition + 1;
+      updateUi();
+      currentElement();
+      setActiveHidden();
 		};
 
 		//Remove transitions from all elements to be moved in each swipe movement to improve perfomance of stacked cards.
@@ -354,137 +353,137 @@ function stackedCards(objId, isInitialRound) {
 			}
 
 		};
+    //
+		// //Move the overlay left to initial position.
+		// function resetOverlayLeft() {
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(useOverlays){
+		// 			setTimeout(function(){
+    //
+		// 				if(stackedOptions === "Top"){
+    //
+		// 					elTrans = elementsMargin * (items - 1);
+    //
+		// 				} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
+    //
+		// 					elTrans = 0;
+    //
+		// 				}
+    //
+		// 				if(!isFirstTime){
+    //
+		// 					leftObj.classList.add('no-transition');
+		// 					topObj.classList.add('no-transition');
+    //
+		// 				}
+    //
+		// 				requestAnimationFrame(function(){
+    //
+		// 					leftObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					leftObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					leftObj.style.opacity = '0';
+    //
+		// 					topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.opacity = '0';
+    //
+		// 				});
+    //
+		// 			},300);
+    //
+		// 			isFirstTime = false;
+		// 		}
+		// 	}
+	  //  };
 
-		//Move the overlay left to initial position.
-		function resetOverlayLeft() {
-			if(!(currentPosition >= maxElements)){
-				if(useOverlays){
-					setTimeout(function(){
+		// //Move the overlay right to initial position.
+		// function resetOverlayRight() {
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(useOverlays){
+		// 			setTimeout(function(){
+    //
+		// 				if(stackedOptions === "Top"){+2
+    //
+		// 					elTrans = elementsMargin * (items - 1);
+    //
+		// 				} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
+    //
+		// 					elTrans = 0;
+    //
+		// 				}
+    //
+		// 				if(!isFirstTime){
+    //
+		// 					rightObj.classList.add('no-transition');
+		// 					topObj.classList.add('no-transition');
+    //
+		// 				}
+    //
+		// 				requestAnimationFrame(function(){
+    //
+		// 					rightObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					rightObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					rightObj.style.opacity = '0';
+    //
+		// 					topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.opacity = '0';
+    //
+		// 				});
+    //
+		// 			},300);
+    //
+		// 			isFirstTime = false;
+		// 		}
+		// 	}
+	  //  };
 
-						if(stackedOptions === "Top"){
-
-							elTrans = elementsMargin * (items - 1);
-
-						} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
-
-							elTrans = 0;
-
-						}
-
-						if(!isFirstTime){
-
-							leftObj.classList.add('no-transition');
-							topObj.classList.add('no-transition');
-
-						}
-
-						requestAnimationFrame(function(){
-
-							leftObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							leftObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							leftObj.style.opacity = '0';
-
-							topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.opacity = '0';
-
-						});
-
-					},300);
-
-					isFirstTime = false;
-				}
-			}
-	   };
-
-		//Move the overlay right to initial position.
-		function resetOverlayRight() {
-			if(!(currentPosition >= maxElements)){
-				if(useOverlays){
-					setTimeout(function(){
-
-						if(stackedOptions === "Top"){+2
-
-							elTrans = elementsMargin * (items - 1);
-
-						} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
-
-							elTrans = 0;
-
-						}
-
-						if(!isFirstTime){
-
-							rightObj.classList.add('no-transition');
-							topObj.classList.add('no-transition');
-
-						}
-
-						requestAnimationFrame(function(){
-
-							rightObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							rightObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							rightObj.style.opacity = '0';
-
-							topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.opacity = '0';
-
-						});
-
-					},300);
-
-					isFirstTime = false;
-				}
-			}
-	   };
-
-		//Move the overlays to initial position.
-		function resetOverlays() {
-			if(!(currentPosition >= maxElements)){
-				if(useOverlays){
-
-					setTimeout(function(){
-						if(stackedOptions === "Top"){
-
-							elTrans = elementsMargin * (items - 1);
-
-						} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
-
-							elTrans = 0;
-
-						}
-
-						if(!isFirstTime){
-
-							leftObj.classList.add('no-transition');
-							rightObj.classList.add('no-transition');
-							topObj.classList.add('no-transition');
-
-						}
-
-						requestAnimationFrame(function(){
-
-							leftObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							leftObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							leftObj.style.opacity = '0';
-
-							rightObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							rightObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							rightObj.style.opacity = '0';
-
-							topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
-							topObj.style.opacity = '0';
-
-						});
-
-					},300);	// wait for animations time
-
-					isFirstTime = false;
-				}
-			}
-	   };
+		// //Move the overlays to initial position.
+		// function resetOverlays() {
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(useOverlays){
+    //
+		// 			setTimeout(function(){
+		// 				if(stackedOptions === "Top"){
+    //
+		// 					elTrans = elementsMargin * (items - 1);
+    //
+		// 				} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
+    //
+		// 					elTrans = 0;
+    //
+		// 				}
+    //
+		// 				if(!isFirstTime){
+    //
+		// 					leftObj.classList.add('no-transition');
+		// 					rightObj.classList.add('no-transition');
+		// 					topObj.classList.add('no-transition');
+    //
+		// 				}
+    //
+		// 				requestAnimationFrame(function(){
+    //
+		// 					leftObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					leftObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					leftObj.style.opacity = '0';
+    //
+		// 					rightObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					rightObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					rightObj.style.opacity = '0';
+    //
+		// 					topObj.style.transform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.webkitTransform = "translateX(0) translateY(" + elTrans + "px) translateZ(0)";
+		// 					topObj.style.opacity = '0';
+    //
+		// 				});
+    //
+		// 			},300);	// wait for animations time
+    //
+		// 			isFirstTime = false;
+		// 		}
+		// 	}
+	  //  };
 
 		function setActiveHidden() {
 			if(!(currentPosition >= maxElements)){
@@ -512,7 +511,7 @@ function stackedCards(objId, isInitialRound) {
 		};
 
 		//Add translate X and Y to active card for each frame.
-		function transformUi(moveX,moveY,opacity,elementObj) {
+		function transformUi(moveX, moveY, opacity, elementObj) {
 			requestAnimationFrame(function(){
 				var element = elementObj;
 
@@ -542,10 +541,16 @@ function stackedCards(objId, isInitialRound) {
 					}
 				} else if(stackedOptions === "Bottom" || stackedOptions === "None"){
 
+          const scale = 1;
+
 					if(element){
-						element.style.webkitTransform = "translateX(" + moveX + "px) translateY(" + (moveY) + "px) translateZ(0) rotate(" + rotateElement + "deg)";
-						element.style.transform = "translateX(" + moveX + "px) translateY(" + (moveY) + "px) translateZ(0) rotate(" + rotateElement + "deg)";
+            element.style.transition = "all 400ms ease";
+						element.style.webkitTransform = "translateX(" + moveX + "px) translateY(" + (moveY) + "px) translateZ(0) rotate(" + rotateElement + "deg) scale("+ scale +")";
+						element.style.transform = "translateX(" + moveX + "px) translateY(" + (moveY) + "px) translateZ(0) rotate(" + rotateElement + "deg) scale("+ scale +")";
 						element.style.opacity = opacity;
+            setTimeout(function () {
+              element.style.zIndex = 4;
+            }, 400);
 					}
 
 				}
@@ -597,11 +602,7 @@ function stackedCards(objId, isInitialRound) {
 
 						}
 
-            // listElNodesObj[i].style.transform ='scale(' + elScale + ') translateX(0) translateY(' + (elTrans - elTransInc) + 'px) translateZ(0)';
-						// listElNodesObj[i].style.webkitTransform ='scale(' + elScale + ') translateX(0) translateY(' + (elTrans - elTransInc) + 'px) translateZ(0)';
-
-
-						listElNodesObj[i].style.transform ='rotate(' + elRotate + 'deg) scale(' + elScale + ') translateX(0) translateY(' + (elTrans - elTransInc) + 'px) translateZ(0)';
+  					listElNodesObj[i].style.transform ='rotate(' + elRotate + 'deg) scale(' + elScale + ') translateX(0) translateY(' + (elTrans - elTransInc) + 'px) translateZ(0)';
 						listElNodesObj[i].style.webkitTransform ='rotate(' + elRotate + 'deg) scale(' + elScale + ') translateX(0) translateY(' + (elTrans - elTransInc) + 'px) translateZ(0)';
 						listElNodesObj[i].style.opacity = elOpac;
 						listElNodesObj[i].style.zIndex = elZindex;
@@ -624,151 +625,151 @@ function stackedCards(objId, isInitialRound) {
 
 		};
 
-		//Touch events block
-		var element = obj;
-		var startTime;
-		var startX;
-		var startY;
-		var translateX;
-		var translateY;
-		var currentX;
-		var currentY;
-		var touchingElement = false;
-		var timeTaken;
-		var topOpacity;
-		var rightOpacity;
-		var leftOpacity;
-
-		function setOverlayOpacity() {
-
-			topOpacity = (((translateY + (elementHeight) / 2) / 100) * -1);
-			rightOpacity = translateX / 100;
-			leftOpacity = ((translateX / 100) * -1);
-
-
-			if(topOpacity > 1) {
-				topOpacity = 1;
-			}
-
-			if(rightOpacity > 1) {
-				rightOpacity = 1;
-			}
-
-			if(leftOpacity > 1) {
-				leftOpacity = 1;
-			}
-		}
-		function gestureStart(evt) {
-			startTime = new Date().getTime();
-
-			startX = evt.changedTouches[0].clientX;
-			startY = evt.changedTouches[0].clientY;
-
-			currentX = startX;
-			currentY = startY;
-
-			setOverlayOpacity();
-
-			touchingElement = true;
-			if(!(currentPosition >= maxElements)){
-				if(listElNodesObj[currentPosition]){
-					listElNodesObj[currentPosition].classList.add('no-transition');
-					setZindex(6);
-
-					if(useOverlays){
-						leftObj.classList.add('no-transition');
-						rightObj.classList.add('no-transition');
-						topObj.classList.add('no-transition');
-					}
-
-					if((currentPosition + 1) < maxElements){
-						listElNodesObj[currentPosition + 1].style.opacity = '1';
-					}
-
-					elementHeight = listElNodesObj[currentPosition].offsetHeight / 3;
-				}
-
-			}
-
-		};
-		function gestureMove(evt) {
-			currentX = evt.changedTouches[0].pageX;
-			currentY = evt.changedTouches[0].pageY;
-
-			translateX = currentX - startX;
-			translateY = currentY - startY;
-
-			setOverlayOpacity();
-
-			if(!(currentPosition >= maxElements)){
-				evt.preventDefault();
-				transformUi(translateX, translateY, 1, currentElementObj);
-
-				if(useOverlays){
-					transformUi(translateX, translateY, topOpacity, topObj);
-
-					if(translateX < 0){
-						transformUi(translateX, translateY, leftOpacity, leftObj);
-						transformUi(0, 0, 0, rightObj);
-
-					} else if(translateX > 0){
-						transformUi(translateX, translateY, rightOpacity, rightObj);
-						transformUi(0, 0, 0, leftObj);
-					}
-
-					if(useOverlays){
-						leftObj.style.zIndex = 8;
-						rightObj.style.zIndex = 8;
-						topObj.style.zIndex = 7;
-					}
-
-				}
-
-			}
-
-		};
-		function gestureEnd(evt) {
-
-			if(!touchingElement){
-				return;
-			}
-
-			translateX = currentX - startX;
-			translateY = currentY - startY;
-
-			timeTaken = new Date().getTime() - startTime;
-
-			touchingElement = false;
-
-			if(!(currentPosition >= maxElements)){
-				if(translateY < (elementHeight * -1) && translateX > ((listElNodesWidth / 2) * -1) && translateX < (listElNodesWidth / 2)){  //is Top?
-
-					if(translateY < (elementHeight * -1) || (Math.abs(translateY) / timeTaken > velocity)){ // Did It Move To Top?
-						onSwipeTop();
-					} else {
-						backToMiddle();
-					}
-
-				} else {
-
-					if(translateX < 0){
-						if(translateX < ((listElNodesWidth / 2) * -1) || (Math.abs(translateX) / timeTaken > velocity)){ // Did It Move To Left?
-							onSwipeLeft();
-						} else {
-							backToMiddle();
-						}
-					} else if(translateX > 0) {
-
-						if (translateX > (listElNodesWidth / 2) && (Math.abs(translateX) / timeTaken > velocity)){ // Did It Move To Right?
-							onSwipeRight();
-						} else {
-							backToMiddle();
-						}
-
-					}
-				}
-			}
-		};
+		// //Touch events block
+		// var element = obj;
+		// var startTime;
+		// var startX;
+		// var startY;
+		// var translateX;
+		// var translateY;
+		// var currentX;
+		// var currentY;
+		// var touchingElement = false;
+		// var timeTaken;
+		// var topOpacity;
+		// var rightOpacity;
+		// var leftOpacity;
+    //
+		// function setOverlayOpacity() {
+    //
+		// 	topOpacity = (((translateY + (elementHeight) / 2) / 100) * -1);
+		// 	rightOpacity = translateX / 100;
+		// 	leftOpacity = ((translateX / 100) * -1);
+    //
+    //
+		// 	if(topOpacity > 1) {
+		// 		topOpacity = 1;
+		// 	}
+    //
+		// 	if(rightOpacity > 1) {
+		// 		rightOpacity = 1;
+		// 	}
+    //
+		// 	if(leftOpacity > 1) {
+		// 		leftOpacity = 1;
+		// 	}
+		// }
+		// function gestureStart(evt) {
+		// 	startTime = new Date().getTime();
+    //
+		// 	startX = evt.changedTouches[0].clientX;
+		// 	startY = evt.changedTouches[0].clientY;
+    //
+		// 	currentX = startX;
+		// 	currentY = startY;
+    //
+		// 	setOverlayOpacity();
+    //
+		// 	touchingElement = true;
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(listElNodesObj[currentPosition]){
+		// 			listElNodesObj[currentPosition].classList.add('no-transition');
+		// 			setZindex(6);
+    //
+		// 			if(useOverlays){
+		// 				leftObj.classList.add('no-transition');
+		// 				rightObj.classList.add('no-transition');
+		// 				topObj.classList.add('no-transition');
+		// 			}
+    //
+		// 			if((currentPosition + 1) < maxElements){
+		// 				listElNodesObj[currentPosition + 1].style.opacity = '1';
+		// 			}
+    //
+		// 			elementHeight = listElNodesObj[currentPosition].offsetHeight / 3;
+		// 		}
+    //
+		// 	}
+    //
+		// };
+		// function gestureMove(evt) {
+		// 	currentX = evt.changedTouches[0].pageX;
+		// 	currentY = evt.changedTouches[0].pageY;
+    //
+		// 	translateX = currentX - startX;
+		// 	translateY = currentY - startY;
+    //
+		// 	setOverlayOpacity();
+    //
+		// 	if(!(currentPosition >= maxElements)){
+		// 		evt.preventDefault();
+		// 		transformUi(translateX, translateY, 1, currentElementObj);
+    //
+		// 		if(useOverlays){
+		// 			transformUi(translateX, translateY, topOpacity, topObj);
+    //
+		// 			if(translateX < 0){
+		// 				transformUi(translateX, translateY, leftOpacity, leftObj);
+		// 				transformUi(0, 0, 0, rightObj);
+    //
+		// 			} else if(translateX > 0){
+		// 				transformUi(translateX, translateY, rightOpacity, rightObj);
+		// 				transformUi(0, 0, 0, leftObj);
+		// 			}
+    //
+		// 			if(useOverlays){
+		// 				leftObj.style.zIndex = 8;
+		// 				rightObj.style.zIndex = 8;
+		// 				topObj.style.zIndex = 7;
+		// 			}
+    //
+		// 		}
+    //
+		// 	}
+    //
+		// };
+		// function gestureEnd(evt) {
+    //
+		// 	if(!touchingElement){
+		// 		return;
+		// 	}
+    //
+		// 	translateX = currentX - startX;
+		// 	translateY = currentY - startY;
+    //
+		// 	timeTaken = new Date().getTime() - startTime;
+    //
+		// 	touchingElement = false;
+    //
+		// 	if(!(currentPosition >= maxElements)){
+		// 		if(translateY < (elementHeight * -1) && translateX > ((listElNodesWidth / 2) * -1) && translateX < (listElNodesWidth / 2)){  //is Top?
+    //
+		// 			if(translateY < (elementHeight * -1) || (Math.abs(translateY) / timeTaken > velocity)){ // Did It Move To Top?
+		// 				onSwipeTop();
+		// 			} else {
+		// 				backToMiddle();
+		// 			}
+    //
+		// 		} else {
+    //
+		// 			if(translateX < 0){
+		// 				if(translateX < ((listElNodesWidth / 2) * -1) || (Math.abs(translateX) / timeTaken > velocity)){ // Did It Move To Left?
+		// 					onSwipeLeft();
+		// 				} else {
+		// 					backToMiddle();
+		// 				}
+		// 			} else if(translateX > 0) {
+    //
+		// 				if (translateX > (listElNodesWidth / 2) && (Math.abs(translateX) / timeTaken > velocity)){ // Did It Move To Right?
+		// 					onSwipeRight();
+		// 				} else {
+		// 					backToMiddle();
+		// 				}
+    //
+		// 			}
+		// 		}
+		// 	}
+		// };
 
 		// element.addEventListener('touchstart', gestureStart, false);
 		// element.addEventListener('touchmove', gestureMove, false);
@@ -780,33 +781,26 @@ function stackedCards(objId, isInitialRound) {
     // });
 
 
-		//Add listeners to call global action for swipe cards
-		// var buttonLeft = document.querySelector('.left-action');
-		// var buttonTop = document.querySelector('.top-action');
-		// var buttonRight = document.querySelector('.right-action');
-    //
-		// buttonLeft.addEventListener('click', onActionLeft, false);
-		// buttonTop.addEventListener('click', onActionTop, false);
-		// buttonRight.addEventListener('click', onActionRight, false);
+
+
 
 
     let quizTimer;
-    let qountdown;
+    let countdown;
 
-    function invocation() {
-      let x = 5;
-      document.querySelector('.question_countdown').innerHTML = x;
+    function questionCountdownTimer() {
+      let ticks = 8;
+      questions[currentPosition].querySelector('.question_countdown').innerHTML = ticks;
 
-      qountdown = setInterval(function() {
-        x--;
-        document.querySelector('.question_countdown').innerHTML = x;
-
+      countdown = setInterval(function() {
+        ticks--;
+        questions[currentPosition].querySelector('.question_countdown').innerHTML = ticks;
       }, 1000);
 
       quizTimer = setInterval(function () {
-        clearInterval(qountdown)
+        clearInterval(countdown)
         moveNextItem();
-      }, 5000);
+      }, ticks * 1000);
     }
 
 
@@ -816,251 +810,344 @@ function stackedCards(objId, isInitialRound) {
       questions[questionIndex].querySelector('[quiz-element="active-question-index"]').innerHTML = questionIndex + 1;
       questions[questionIndex].querySelector('[quiz-element="total-question-index"]').innerHTML = questions.length;
 
-      if (isInitialRound) {
+      if (roundCount === '_1') {
         answers.push({
           question: questions[questionIndex].querySelector('[quiz-element="question"]').innerHTML,
           answerFast: undefined,
-          answerSlow: undefined
+          answerSlow: undefined,
+          answer_valueFast: undefined,
+          answer_valueSlow: undefined
         })
       }
 
       questions[questionIndex].querySelectorAll('.card-item_button').forEach((button, i) => {
         button.addEventListener('click', function(){
-          moveNextItem(button.getAttribute('aria-roledescription'));
+
+          const questionAnswer = button.querySelector('[quiz-element=answer]').innerHTML;
+          const questionanswer_value = button.querySelector('[quiz-element=answer-score]').value;
+
+          moveNextItem(questionanswer_value, questionAnswer);
+
         }, false);
       });
 
     }
 
 
+
     document.addEventListener('keydown', onKeydown);
 
     function onKeydown() {
-      switch (event.keyCode) {
-        case 37:
-          console.log('left arrow')
-          console.log(questions[currentPosition])
-          moveNextItem(
-            questions[currentPosition].querySelectorAll('.card-item_button')[0].getAttribute('aria-roledescription')
-          );
-          break;
-        case 39:
-          console.log('right arrow')
-          moveNextItem(
-            questions[currentPosition].querySelectorAll('.card-item_button')[1].getAttribute('aria-roledescription')
-          );
-          break;
-        default:
-      }
+      // if (currentPosition != maxElements){
+        switch (event.keyCode) {
+          case 37:
+            moveNextItem(
+              questions[currentPosition].querySelectorAll('.card-item_button')[0].querySelector('[quiz-element=answer-score]').value,
+              questions[currentPosition].querySelectorAll('.card-item_button')[0].querySelector('[quiz-element=answer]').innerHTML
+            );
+            questions[currentPosition].querySelectorAll('.card-item_button')[0].classList.add('is-active');
+            break;
+          case 39:
+            moveNextItem(
+              questions[currentPosition].querySelectorAll('.card-item_button')[1].querySelector('[quiz-element=answer-score]').value,
+              questions[currentPosition].querySelectorAll('.card-item_button')[1].querySelector('[quiz-element=answer]').innerHTML
+            );
+            questions[currentPosition].querySelectorAll('.card-item_button')[1].classList.add('is-active');
+            break;
+          default:
+        }
+      // }
     }
 
 
 
-    function moveNextItem(questionValue) {
-
+    function moveNextItem(questionanswer_value, questionAnswer) {
       onActionTop();
-      clearTimeout(quizTimer)
-      clearTimeout(qountdown)
+      clearTimeout(quizTimer);
+      clearTimeout(countdown);
 
-      $(progressElement).stop(true, false);
-      $(progressElement).animate({
-        width: (currentPosition + 1) / maxElements * 100 + '%',
-      }, 500);
+      // $(progressElement).stop(true, false);
+      // $(progressElement).animate({
+      //   width: (currentPosition + 1) / maxElements * 100 + '%',
+      // }, 500);
 
-
-
-      if (isInitialRound) {
-        answers[currentPosition].answerFast = questionValue || undefined;
-
-        sendGA('event', 'question_answer', {
-          'uuid': uuid4,
-          'question': answers[currentPosition].question,
-          'question_index': currentPosition,
-          'question_total': maxElements,
-          'answer': questionValue || null,
-          'round': 1,
-          'ul': document.documentElement.lang
-        });
-
-      } else {
-        answers[currentPosition].answerSlow = questionValue || undefined;
-
-        sendGA('event', 'question_answer', {
-          'uuid': uuid4,
-          'question': answers[currentPosition].question,
-          'question_index': currentPosition,
-          'question_total': maxElements,
-          'answer': questionValue || null,
-          'round': 2,
-          'ul': document.documentElement.lang
-        });
-
+      switch (roundCount) {
+        case '_1':
+          answers[currentPosition].answer_valueFast = parseInt(questionanswer_value) || 0;
+          answers[currentPosition].answerFast = questionAnswer || undefined;
+          break;
+        case '_2':
+          answers[currentPosition].answer_valueSlow = parseInt(questionanswer_value) || 0;
+          answers[currentPosition].answerSlow = questionAnswer || undefined;
+          break;
       }
 
-      console.log(answers[currentPosition])
+      if (roundCount !== '_test') {
+        sendGA('event', `Question_answer_round${roundCount}`, {
+          'uuid': uuid4,
+          'question': answers[currentPosition].question,
+          'question_index': (currentPosition+1),
+          'question_total': maxElements,
+          'answer': questionAnswer || null,
+          'answer_value' : questionanswer_value || null,
+          'round': roundCount,
+          'ul': document.documentElement.lang
+        });
+      }
+
+
+
 
       if (currentPosition === maxElements - 1){
 
         document.removeEventListener('keydown', onKeydown, false); // remove addEventListener
 
-        if (isInitialRound) {
-          sendGA('event', 'round_complete', {
-            'uuid': uuid4,
-            'round': 1,
-            'ul': document.documentElement.lang
-          });
-          setTimeout(function () { // wait 3000ms and animate to next slide
-            animateSlide($(slides[3]), $(slides[4])) // animate to boom slide
-            setTimeout(function () { // wait 3000ms and animate to next slide
-              animateSlide($(slides[4]), $(slides[5]))
-            }, 3000);
-          }, 200);
+        sendGA('event', `Round_complete${roundCount}`, {
+          'uuid': uuid4,
+          'round': roundCount,
+          'ul': document.documentElement.lang
+        });
 
-        } else {
-          sendGA('event', 'round_complete', {
-            'uuid': uuid4,
-            'round': 2,
-            'ul': document.documentElement.lang
-          });
-          setTimeout(function () { // wait 3000ms and animate to next slide
-            animateSlide($(slides[6]), $(slides[7])) // animate to boom slide
+        switch (roundCount) {
+          // case '_test':
+          //   setTimeout(function () { // wait 3000ms and animate to next slide
+          //     animateSlide($(slides[4]), $(slides[5]))
+          //     quizCountdown(slides[5], slides[6], 'stacked-cards-block-1', '_1');
+          //   }, 250);
+          //   break;
+          case '_1':
             setTimeout(function () { // wait 3000ms and animate to next slide
-              animateSlide($(slides[7]), $(slides[8]))
-              console.log(answers);
-            }, 2000);
-          }, 200);
+              animateSlide($(slides[3]), $(slides[4]))
+            }, 250);
+            break;
+          case '_2':
+            calculateScore();
+            setTimeout(function () { // wait 3000ms and animate to next slide
+              animateSlide($(slides[5]), $(slides[6])) // animate to boom slide
+            }, 250);
+            break;
         }
 
       } else {
-        if(isInitialRound) invocation();
+        if(roundCount !== '_2') questionCountdownTimer();
       }
+
+
     }
 
-    if(isInitialRound) invocation(); // first question
+
+    if(roundCount !== '_2') questionCountdownTimer(); // first question
 }
 
 
 
-document.querySelector('[quiz-action="initialize"]').addEventListener('click', function(){
-  animateSlide($(slides[0]), $(slides[1]))
-});
 
 
 
+function calculateScore(){
 
-// start round one of the quiz
-document.querySelector('[quiz-action="start"]').addEventListener('click', function(){
+  let round1Score = 0;
+  let round2Score = 0;
 
-  sendGA('event', 'round_start', {
-    'uuid': uuid4,
-    'round': 1,
-    'ul': document.documentElement.lang
+  answers.forEach((question, i) => {
+    if (question.answer_valueFast == 1 || question.answer_valueFast == -1 ) {
+      round1Score += question.answer_valueFast;
+      round2Score += question.answer_valueSlow;
+    } else {
+      console.log('no answer given' + question.answer_valueFast)
+    }
   });
 
-  animateSlide($(slides[1]), $(slides[2]))
-
-  // countdown
-  let counter = 5;
-  const countdown = setInterval(function () {
-
-  $('[quiz-item="countdown"]:eq('+(5-counter)+')').addClass('grow');
-  $('[quiz-item="countdown"]:eq('+(6-counter)+')').removeClass('shrink');
-
-  $('.timer_illustration').css("transform", "rotate("+(30-(6-counter)*6)+"deg)" )
 
 
-  counter--;
+  const round1WokePercentage = (round1Score + answers.length) * 4;
+  const round2WokePercentage = (round2Score + answers.length) * 4;
+  const wokeDifference = round2WokePercentage - round1WokePercentage;
+  let wokeResult;
+
+  console.log(answers)
+  console.log("round1Score: "+round1Score)
+  console.log("round2Score: "+round2Score)
+  console.log("round1WokePercentage: "+round1WokePercentage)
+  console.log("round2WokePercentage: "+round2WokePercentage)
+  console.log("wokeDifference: "+wokeDifference)
+
+  document.querySelectorAll('[quiz-element="result-text"]').forEach((text, i) => {
+    text.style.display = 'none';
+  });
+
+  if (wokeDifference > 0 || wokeDifference < 0) {
+    wokeResult = `${Math.abs(wokeDifference)}% verschil in woke`;
+    document.querySelector('[quiz-element="result-text"]:nth-child(1)').style.display = 'block';
+    console.log(`Je bent ${Math.abs(wokeDifference)}% verschil in woke!`)
+
+  } else {
+    wokeResult = `even woke`;
+    document.querySelector('[quiz-element="result-text"]:nth-child(2)').style.display = 'block';
+    console.log(`Je bent even woke!`)
+  }
+
+  // document.querySelector('#woke-score').value = wokeResult;
+  // document.querySelector('[quiz-element="result"]').innerHTML = wokeResult;
+  //
+  // sendGA('event', 'Calculate_result', {
+  //   'uuid': uuid4,
+  //   'result': wokeResult,
+  //   'ul': document.documentElement.lang
+  // });
+}
 
 
-    if (counter === 0) {
-      // counter = "Go!";
-      clearInterval(countdown)
-
-      setTimeout(function () {
-        animateSlide($(slides[2]), $(slides[3]))
-      }, 1000);
-
-    }
-
-    // $('[quiz-item="countdown"]:first-child').text(counter);
-  }, 1000);
-
-  setTimeout(function () {
-      stackedCards(document.getElementById('stacked-cards-block'), true);
-  }, counter * 1000);
 
 
+// initalize the quiz
+document.querySelector('[quiz-action="initialize"]').addEventListener('click', function(){
+  animateSlide($(slides[0]), $(slides[1]))
+
+  sendGA('event', 'Initialize_test', {
+    'uuid': uuid4,
+    'ul': document.documentElement.lang
+  });
 });
 
+// // initalize the quiz
+// document.querySelector('[quiz-action="show-test-round"]').addEventListener('click', function(){
+//   animateSlide($(slides[1]), $(slides[2]))
+//
+//   sendGA('event', 'Start_test', {
+//     'uuid': uuid4,
+//     'ul': document.documentElement.lang
+//   });
+// });
 
-$('[quiz-action="start-2"]').click(function(){
 
-  sendGA('event', 'round_start', {
+
+// // start test round of the quiz
+// document.querySelector('[quiz-action="start-test-round"]').addEventListener('click', function(){
+//   animateSlide($(slides[2]), $(slides[3]))
+//   quizCountdown(slides[3], slides[4], 'stacked-cards-block-0', '_test');
+// });
+
+// start round 1 of the quiz
+document.querySelector('[quiz-action="start-round1"]').addEventListener('click', function(){
+  animateSlide($(slides[1]), $(slides[2]))
+  quizCountdown(slides[2], slides[3], 'stacked-cards-block-1', '_1');
+});
+
+// start round 2 of quiz
+document.querySelector('[quiz-action="start-round2"]').addEventListener('click', function(){
+  animateSlide($(slides[4]), $(slides[5]));
+  setTimeout(function () {
+    stackedCards(document.getElementById('stacked-cards-block-2'), '_2'); // initialize question cards
+  }, 250);
+
+  sendGA('event', `Round_start_2`, {
     'uuid': uuid4,
     'round': 2,
     'ul': document.documentElement.lang
   });
 
-  stackedCards(document.getElementById('stacked-cards-block-2'), false);
-  setTimeout(function () {
-      animateSlide($(slides[5]), $(slides[6]))
-  }, 100);
-
 });
 
-
-
-// form submit
-document.querySelector('form[data-name="form-submit-result"]').addEventListener('submit', function(){
-  // animate to the last slide and perform calculation.
-  animateSlide($(slides[8]), $(slides[9]))
-  document.querySelector('#answers-text').innerHTML = JSON.stringify(answers);
-  console.log(answers);
-
-  typeSplit[1] = new SplitType('#split-text-2', {
-    types: "lines, words"
-  });
-  $(".line").each(function (index) {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: $(this), // trigger element - viewport
-        start: "top 65%",
-        end: "bottom 65%",
-        scrub: 1
-      }
-    });
-    tl.to($(this), {
-      backgroundPosition: "0% 50%",
-      duration: 1
-    });
+document.querySelector('[quiz-action="open-dossier"]').addEventListener('click', function(){
+  sendGA('event', `Open_dossier`, {
+    'uuid': uuid4,
+    'ul': document.documentElement.lang
   });
 });
 
 
-// $('.quize-slide_wrap').height($(slides[0]).height());
+const lottie = Webflow.require('lottie').lottie;
+const animations = lottie.getRegisteredAnimations();
+// console.log(animations)
 
-// $('footer').remove();
+
+function quizCountdown(slide, targetSlide, stackedCardBlockId, round){
+
+  sendGA('event', `Round_start${round}`, {
+    'uuid': uuid4,
+    'round': round,
+    'ul': document.documentElement.lang
+  });
+
+  animations.forEach((lottie, i) => {
+    if (lottie.wrapper.classList[0] == "lottie-counter") {
+      lottie.goToAndStop(0, true);
+      setTimeout(function () {
+            lottie.goToAndPlay(0, true);
+      }, 0);
+
+    }
+  });
+
+
+  let counter = 3;
+  const fixedCount = counter;
+  const countdown = setInterval(function () {
+
+    slide.querySelectorAll('[quiz-item="countdown"]')[fixedCount-counter].classList.add('grow');
+    slide.querySelectorAll('[quiz-item="countdown"]')[(fixedCount+1)-counter].classList.remove('shrink');
+    // slide.querySelector('.timer_illustration').style.transform = "rotate("+(30-((fixedCount+1)-counter)*(fixedCount+1))+"deg)";
+    // slide.querySelector('.timer_illustration').style.webkitTransform = "rotate("+(30-((fixedCount+1)-counter)*(fixedCount+1))+"deg)";
+
+    counter--;
+
+    if (counter === 0) { // clear interval and move to next slide
+      clearInterval(countdown);
+
+      setTimeout(function () {
+
+        animateSlide($(slide), $(targetSlide));
+
+        setTimeout(function () {
+          stackedCards(document.getElementById(stackedCardBlockId), round); // initialize question cards
+        }, 250);
+
+      }, 1200);
+    }
+  }, 1000);
+}
+
+
+
+
+
+// // form submit
+// document.querySelector('form[data-name="form-submit-result"]').addEventListener('submit', function(){
+//   sendGA('event', 'Submit_email', {
+//     'uuid': uuid4,
+//     'ul': document.documentElement.lang
+//   });
+//
+//   animateSlide($(slides[9]), $(slides[10])) // animate to final slide
+// });
+
+
 
 function animateSlide(currentSlide, targetSlide) {
-
   targetSlide.css('position', 'relative');
   currentSlide.css('position', 'absolute');
 
-  currentSlide.hide()
-  targetSlide.show().fadeTo(400,1);
+  currentSlide.hide();
+  targetSlide.show().fadeTo(400, 1);
 
+  setTimeout(function () {
+    requestAnimationFrame(raf)
+  }, 450);
 }
 
+
+
+function sendGA(event, event_name, event_parameters) {
+  console.log(event, event_name, event_parameters)
+  // gtag(event, event_name, event_parameters);
+  rmgDap.sendEvent("dialogueAction", {"SRC": "siteDialogue", "DATA": {"DIALOGUECODE": "WOKE2023", "ACTIONCODE": event_name}});
+}
 
 function uuidv4() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
-}
-
-function sendGA(event, event_name, event_parameters) {
-  console.log(event, event_name, event_parameters)
-  gtag(event, event_name, event_parameters);
 }
 
 // assign a new uuid to current browser
@@ -1070,30 +1157,78 @@ if (!window.localStorage.getItem('uuid4')) {
 const uuid4 = window.localStorage.getItem('uuid4');
 
 
-
-
-
-
-
-
-const lenis = new Lenis({
-  duration: 1.1,
-  easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://easings.net
-  direction: 'vertical', // vertical, horizontal
-  gestureDirection: 'vertical', // vertical, horizontal, both
-  smooth: true,
-  mouseMultiplier: 1,
-  smoothTouch: false,
-  touchMultiplier: 2,
-  infinite: false,
-})
+let lenis;
 
 function raf(time) {
   lenis.raf(time)
   requestAnimationFrame(raf)
 }
 
-requestAnimationFrame(raf)
+let lenisReady = setInterval(function () {
+
+  if (window.Lenis) {
+
+    clearInterval(lenisReady);
+
+    lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://easings.net
+      direction: 'vertical', // vertical, horizontal
+      gestureDirection: 'vertical', // vertical, horizontal, both
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    })
+
+    requestAnimationFrame(raf)
+  }
 
 
+}, 50);
+
+
+
+
+
+
+// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+let vh = window.innerHeight * 0.01;
+let oldVh = vh;
+let resizeTimeout;
+
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+$(window).resize(function() {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(function(){
+    vh = window.innerHeight * 0.01;
+    if (Math.abs(vh - oldVh) >= 75) {
+      oldVh = vh;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+  }, 75);
 });
+
+
+
+
+document.querySelectorAll('.language-switch_item').forEach((switcher, i) => {
+  switcher.addEventListener('click', function(){
+    sendGA('event', 'Click_language_switcher', {
+      'uuid': uuid4,
+      'ul': document.documentElement.lang
+    });
+  })
+});
+
+
+
+document.querySelector('[cc-preferences="open"]').addEventListener('click', function(){
+  Didomi.preferences.show();
+});
+
+
+
+}); // close webflow.push
