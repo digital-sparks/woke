@@ -954,7 +954,7 @@ function calculateScore(){
       round1Score += question.answer_valueFast;
       round2Score += question.answer_valueSlow;
     } else {
-      console.log('no answer given' + question.answer_valueFast)
+      // console.log('no answer given' + question.answer_valueFast)
     }
   });
 
@@ -965,12 +965,12 @@ function calculateScore(){
   const wokeDifference = round2WokePercentage - round1WokePercentage;
   let wokeResult;
 
-  console.log(answers)
-  console.log("round1Score: "+round1Score)
-  console.log("round2Score: "+round2Score)
-  console.log("round1WokePercentage: "+round1WokePercentage)
-  console.log("round2WokePercentage: "+round2WokePercentage)
-  console.log("wokeDifference: "+wokeDifference)
+  // console.log(answers)
+  // console.log("round1Score: "+round1Score)
+  // console.log("round2Score: "+round2Score)
+  // console.log("round1WokePercentage: "+round1WokePercentage)
+  // console.log("round2WokePercentage: "+round2WokePercentage)
+  // console.log("wokeDifference: "+wokeDifference)
 
   document.querySelectorAll('[quiz-element="result-text"]').forEach((text, i) => {
     text.style.display = 'none';
@@ -979,12 +979,12 @@ function calculateScore(){
   if (wokeDifference > 0 || wokeDifference < 0) {
     wokeResult = `${Math.abs(wokeDifference)}% verschil in woke`;
     document.querySelector('[quiz-element="result-text"]:nth-child(1)').style.display = 'block';
-    console.log(`Je bent ${Math.abs(wokeDifference)}% verschil in woke!`)
+    // console.log(`Je bent ${Math.abs(wokeDifference)}% verschil in woke!`)
 
   } else {
     wokeResult = `even woke`;
     document.querySelector('[quiz-element="result-text"]:nth-child(2)').style.display = 'block';
-    console.log(`Je bent even woke!`)
+    // console.log(`Je bent even woke!`)
   }
 
   // document.querySelector('#woke-score').value = wokeResult;
@@ -1139,7 +1139,7 @@ function animateSlide(currentSlide, targetSlide) {
 
 
 function sendGA(event, event_name, event_parameters) {
-  console.log(event, event_name, event_parameters)
+  // console.log(event, event_name, event_parameters)
   // gtag(event, event_name, event_parameters);
   rmgDap.sendEvent("dialogueAction", {"SRC": "siteDialogue", "DATA": {"DIALOGUECODE": "WOKE2023", "ACTIONCODE": event_name}});
 }
