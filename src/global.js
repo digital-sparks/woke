@@ -789,7 +789,7 @@ function stackedCards(objId, roundCount) {
     let countdown;
 
     function questionCountdownTimer() {
-      let ticks = 8;
+      let ticks = 6;
       questions[currentPosition].querySelector('.question_countdown').innerHTML = ticks;
 
       countdown = setInterval(function() {
